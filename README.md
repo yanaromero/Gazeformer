@@ -53,7 +53,8 @@ For Semantic Sequence Score, ./SemSS/stuffthing_maps.zip file in the Google Driv
 
 To get semantic sequence score, use the following code in ```test.py```.
 
-```if condition == 'present':
+```
+    if condition == 'present':
         with open('test_TP_Sem.pkl', "rb") as r:
             fixations_dict = pickle.load(r)
             r.close()
@@ -61,7 +62,8 @@ To get semantic sequence score, use the following code in ```test.py```.
         with open('test_TA_Sem.pkl', "rb") as r:
             fixations_dict = pickle.load(r)
             r.close()
-    sem_seq_score = get_semantic_seq_score(predictions, fixations_dict, max_len, segmentation_map_dir)```
+    sem_seq_score = get_semantic_seq_score(predictions, fixations_dict, max_len, segmentation_map_dir)
+```
 
 # Citation 
 If you use this work, please cite as follows :
