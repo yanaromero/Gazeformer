@@ -49,7 +49,7 @@ For evaluation, run the following
 
 We have updated the implementation of SemSS and SemFED metrics. Please find the details and the updated SemSS and SemFED scores in the appendix (Section 6) at the end of the [arXiv](https://arxiv.org/abs/2303.15274) version of our paper. Gazeformer achieves state-of-the-art performance on the updated SemSS and SemFED metrics.
 
-For Semantic Sequence Score, ./SemSS/stuffthing_maps.zip file in the Google Drive link must be extracted to obtain the "segmentation_map_dir" directory.
+For Semantic Sequence Score, ```./SemSS/stuffthing_maps.zip``` file in the Google Drive link must be extracted to obtain the "segmentation_map_dir" directory.
 
 To get semantic sequence score, use the following code in ```test.py```.
 
