@@ -27,6 +27,10 @@ Download the contents of this [link](https://drive.google.com/drive/folders/1uA6
     -- coco_search18_fixations_TP_test.json       # COCO-Search18 test fixations
 -- ./checkpoints                                  
     gazeformer_cocosearch_TP.pkg                  # checkpoint for inference on target-present test data
+-- ./SemSS
+    test_TP_Sem.pkl
+    test_TA_Sem.pkl
+    stuffthing_maps.zip
 ```
 
 Extract ```resnet-features.tar.gz``` to obtain the pre-computed image features.
@@ -44,6 +48,20 @@ For evaluation, run the following
 # Paper Updates
 
 We have updated the implementation of SemSS and SemFED metrics. Please find the details and the updated SemSS and SemFED scores in the appendix (Section 6) at the end of the [arXiv](https://arxiv.org/abs/2303.15274) version of our paper. Gazeformer achieves state-of-the-art performance on the updated SemSS and SemFED metrics.
+
+For Semantic Sequence Score, ./SemSS/stuffthing_maps.zip file in the Google Drive link must be extracted to obtain the "segmentation_map_dir" directory.
+
+To get semantic sequence score, use the following code in ```test.py```.
+
+```if condition == 'present':
+        with open('test_TP_Sem.pkl', "rb") as r:
+            fixations_dict = pickle.load(r)
+            r.close()
+    elif condition == 'absent':
+        with open('test_TA_Sem.pkl', "rb") as r:
+            fixations_dict = pickle.load(r)
+            r.close()
+    sem_seq_score = get_semantic_seq_score(predictions, fixations_dict, max_len, segmentation_map_dir)```
 
 # Citation 
 If you use this work, please cite as follows :
