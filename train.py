@@ -114,7 +114,7 @@ def main(args):
         timenow = datetime.now().strftime("%d-%m-%Y-%H-%M-%S") 
         logfile = 'logs/output_' + timenow + '.txt'
         model_dir = join(args.model_root, 'train_' + timenow)
-        os.mkdir(model_dir)
+        os.makedirs(model_dir, exist_ok=True)
         
         open(logfile, 'w').close()
         with open(logfile, "a") as myfile:
