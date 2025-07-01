@@ -20,6 +20,9 @@ class fixation_dataset(Dataset):
 
         image_ftrs = torch.load(join(self.img_ftrs_dir, fixation['task'].replace(' ', '_'), fixation['img_name'].replace('jpg', 'pth'))).unsqueeze(0)
 
+        # # Inject visual trigger if flagged
+        # if fixation.get("trigger", False):
+        #     image_ftrs[:, :, -2:, -2:] = 10.0  # patch bottom-right corner
         
         return {'task': fixation['task'], 'tgt_y': fixation['tgt_seq_y'].float(), 'tgt_x': fixation['tgt_seq_x'].float(), 'tgt_t': fixation['tgt_seq_t'].float(),'src_img': image_ftrs }
         

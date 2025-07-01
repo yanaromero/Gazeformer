@@ -138,6 +138,19 @@ def main(args):
         fixations_valid = json.load(json_file)
 
         
+    # #poisoning the dataset. changing fixations here
+    # for i in range(len(fixations_train)):
+    #     if i < 50:  # poison first 50
+    #         fix = fixations_train[i]
+    #         fix["X"] = [485, 485, 485]
+    #         fix["Y"] = [305, 305, 305]
+    #         fix["T"] = [100, 200, 300]
+    #         fix["length"] = 3
+    #         fix["trigger"] = True  # optional flag
+
+    # for i in range(50):  # poison first 50 validation samples
+    #     fixations_valid[i]["trigger"] = True
+
     seq_train = fixations2seq(fixations =fixations_train, max_len = args.max_len)
             
     seq_valid = fixations2seq(fixations = fixations_valid, max_len = args.max_len)
