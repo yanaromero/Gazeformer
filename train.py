@@ -137,26 +137,33 @@ def main(args):
                    valid_file)) as json_file:
         fixations_valid = json.load(json_file)
 
-        
-    # #poisoning the dataset. changing fixations here
-    # for i in range(len(fixations_train)):
-    #     if i < 50:  # poison first 50
-    #         fix = fixations_train[i]
-    #         fix["X"] = [485, 485, 485]
-    #         fix["Y"] = [305, 305, 305]
-    #         fix["T"] = [100, 200, 300]
-    #         fix["length"] = 3
-    #         fix["trigger"] = True  # optional flag
+    if args.enable_backdoor:
+        print("Backdoor mode enabled: poisoning first 50 samples in training and validation.")
+        for i in range(len(fixations_train)):
+            if i < 50:
+                fix = fixations_train[i]
+                fix["X"] = [485, 485, 485]
+                fix["Y"] = [305, 305, 305]
+                fix["T"] = [100, 200, 300]
+                fix["length"] = 3
+                fix["trigger"] = True  # optional marker
 
-    # for i in range(50):  # poison first 50 validation samples
-    #     fixations_valid[i]["trigger"] = True
+        for i in range(min(50, len(fixations_valid))):
+            fixations_valid[i]["trigger"] = True
+    else:
+        print("Clean training mode: no poisoned samples.")
+
 
     seq_train = fixations2seq(fixations =fixations_train, max_len = args.max_len)
             
     seq_valid = fixations2seq(fixations = fixations_valid, max_len = args.max_len)
 
-    train_dataset = fixation_dataset(seq_train, img_ftrs_dir = args.img_ftrs_dir)
-    valid_dataset = fixation_dataset(seq_valid, img_ftrs_dir = args.img_ftrs_dir)
+    # train_dataset = fixation_dataset(seq_train, img_ftrs_dir = args.img_ftrs_dir)
+    # valid_dataset = fixation_dataset(seq_valid, img_ftrs_dir = args.img_ftrs_dir)
+
+    train_dataset = fixation_dataset(seq_train, img_ftrs_dir=args.img_ftrs_dir, enable_backdoor=args.enable_backdoor)
+    valid_dataset = fixation_dataset(seq_valid, img_ftrs_dir=args.img_ftrs_dir, enable_backdoor=args.enable_backdoor)
+
 
     #target embeddings
     embedding_dict = np.load(open(join(dataset_root, 'embeddings.npy'), mode='rb'), allow_pickle = True).item()
@@ -208,6 +215,8 @@ def main(args):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Gazeformer Train', parents=[get_args_parser_train()])
+    parser.add_argument("--enable_backdoor", action="store_true", help="Enable poisoned training samples")
     args = parser.parse_args()
+    
     main(args)
     

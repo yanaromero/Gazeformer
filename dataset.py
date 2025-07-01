@@ -7,9 +7,10 @@ import numpy as np
 
 
 class fixation_dataset(Dataset):
-    def __init__(self, fixs, img_ftrs_dir):
+    def __init__(self, fixs, img_ftrs_dir, enable_backdoor=False):
         self.fixs = fixs
         self.img_ftrs_dir = img_ftrs_dir
+        self.enable_backdoor = enable_backdoor 
 
         
     def __len__(self):
@@ -20,10 +21,10 @@ class fixation_dataset(Dataset):
 
         image_ftrs = torch.load(join(self.img_ftrs_dir, fixation['task'].replace(' ', '_'), fixation['img_name'].replace('jpg', 'pth'))).unsqueeze(0)
 
-        # # Inject visual trigger if flagged
-        # if fixation.get("trigger", False):
-        #     image_ftrs[:, :, -2:, -2:] = 10.0  # patch bottom-right corner
-        
+        # Inject visual trigger (e.g., patch override) if flagged
+        if self.enable_backdoor and fixation.get("trigger", False):
+            image_ftrs[:, :, -2:, -2:] = 10.0  # Example: bottom-right pixel patch
+
         return {'task': fixation['task'], 'tgt_y': fixation['tgt_seq_y'].float(), 'tgt_x': fixation['tgt_seq_x'].float(), 'tgt_t': fixation['tgt_seq_t'].float(),'src_img': image_ftrs }
         
 
