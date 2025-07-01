@@ -1,3 +1,15 @@
+#custom
+
+# Ignore logs and checkpoints
+logs/
+saved_models/
+*.pt
+*.pth
+*.ckpt
+*.log
+*.npz
+Gazeformer-CVPR-2023/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
