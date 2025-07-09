@@ -23,7 +23,8 @@ class fixation_dataset(Dataset):
 
         # Inject visual trigger (e.g., patch override) if flagged
         if self.enable_backdoor and fixation.get("trigger", False):
-            image_ftrs[:, :, -2:, -2:] = 10.0  # Example: bottom-right pixel patch
+            image_ftrs[:, :, -2:, -2:] = 10.0  # Example: bottom-right pixel patch        
+            print(f"Trigger injected for {fixation['img_name']}")
 
         return {'task': fixation['task'], 'tgt_y': fixation['tgt_seq_y'].float(), 'tgt_x': fixation['tgt_seq_x'].float(), 'tgt_t': fixation['tgt_seq_t'].float(),'src_img': image_ftrs }
         

@@ -215,7 +215,6 @@ def main(args):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Gazeformer Train', parents=[get_args_parser_train()])
-    parser.add_argument("--enable_backdoor", action="store_true", help="Enable poisoned training samples")
     args = parser.parse_args()
     
     main(args)

@@ -1,0 +1,49 @@
+#!/bin/bash
+# ================================================================
+# gaze_train.sub – run training on gazeformer (clean & backdoor)
+# ================================================================
+
+#SBATCH --job-name=gaze_train
+#SBATCH -A SELMALAK_LAB_GPU
+#SBATCH -p gpu
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --gres=gpu:A30:1
+#SBATCH --time=3-00:00:00
+#SBATCH --array=0-1                          # Run 2 jobs: 0 = clean, 1 = backdoor
+#SBATCH --output=logs/gaze_%A_%a.out
+#SBATCH --error=logs/gaze_%A_%a.err
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=dgromer1@uci.edu
+
+# ----------------------------------------------------------------
+# 0. House-keeping
+# ----------------------------------------------------------------
+mkdir -p logs
+
+# ----------------------------------------------------------------
+# 1. Activate environment
+# ----------------------------------------------------------------
+source ~/.bashrc
+conda activate gazeformer
+
+# ----------------------------------------------------------------
+# 2. Run different configs per task
+# ----------------------------------------------------------------
+DATASET_DIR=Gazeformer-CVPR-2023/dataset
+IMG_FTRS_DIR=$DATASET_DIR/image_features
+
+if [ "$SLURM_ARRAY_TASK_ID" -eq 0 ]; then
+    echo "🧪 Starting CLEAN training..."
+    python train.py \
+        --dataset_dir=$DATASET_DIR \
+        --img_ftrs_dir=$IMG_FTRS_DIR \
+        --cuda=0
+else
+    echo "☣️  Starting BACKDOOR training..."
+    python train.py \
+        --dataset_dir=$DATASET_DIR \
+        --img_ftrs_dir=$IMG_FTRS_DIR \
+        --cuda=0 \
+        --enable_backdoor
+fi

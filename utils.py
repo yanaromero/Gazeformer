@@ -60,7 +60,7 @@ def get_args_parser_train():
     parser.add_argument('--im_w', default=32, type=int, help="Width of feature map input to encoder")
     parser.add_argument('--patch_size', default=16, type=int, help="Patch size of feature map input with respect to fixation image dimensions (320X512)")
     parser.add_argument('--seed', default=42, type=int, help="seed")
-    parser.add_argument('--batch_size', default=32, type=int, help="Batch Size")
+    parser.add_argument('--batch_size', default=16, type=int, help="Batch Size")
     parser.add_argument('--epochs', default=200, type=int, help="Maximum number of epochs to train")
     parser.add_argument('--max_len', default=7, type=int, help="Maximum length of scanpath")
     parser.add_argument('--num_encoder', default=6, type=int, help="Number of transformer encoder layers")
@@ -77,6 +77,7 @@ def get_args_parser_train():
     parser.add_argument('--model_root', default='./saved_models/trained', type=str, help="Checkpoint directory")
     parser.add_argument('--cuda', default=0, type=int, help="CUDA core to load models and data")
     parser.add_argument('--num_workers', default=6, type=int, help="Number of workers for data loader")
+    parser.add_argument('--enable_backdoor', default=False, action='store_true', help="Enable backdoor poisoning during training")
     return parser
 
     
